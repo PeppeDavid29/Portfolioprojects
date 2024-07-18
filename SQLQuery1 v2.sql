@@ -3,12 +3,6 @@ Select *
  Where continent is not null
  order by 3,4
 
- --Select *
- --From [Portfoilio Project]..['Covid Vaccinations$']
- --order by 3,4
- 
- --Select Data that we are going to be using
-
 
  
  Select Location, date, total_cases, new_cases, total_deaths, population
@@ -16,8 +10,6 @@ From [Portfoilio Project]..['Covid Death$']
  Where continent is not null
  order by 1,2
 
- --Looking at Total Cases vs Total Deaths
- --shows likelihood of dying if you contract covid in your country
  SELECT
     Location,
     date,
@@ -28,8 +20,6 @@ From [Portfoilio Project]..['Covid Death$']
  Where location like '%india%'
  order by 1,2
 
- --Looking at Total Cases vs Population
- --Shows what percentage of population got covid
  SELECT
     Location,
     date,
@@ -39,8 +29,6 @@ From [Portfoilio Project]..['Covid Death$']
  From [Portfoilio Project]..['Covid Death$']
  Where location like '%Africa%'
  order by 1,2
-
- --Looking at countries with highest infection Rate compaared to population
 
 SELECT
     Location,
@@ -55,7 +43,6 @@ GROUP BY
 	order by PercentPopulationInfected ASC;
 	
 	
-	-- Showing countries with highest Death Count per Population;
 
 SELECT Location, MAX(CAST(total_deaths AS int)) AS TotalDeathCount
 From [Portfoilio Project]..['Covid Death$']
@@ -69,7 +56,6 @@ Select *
  Where continent is not null
  order by 3,4
 
- --Let's Break Things Down By Continents
 
  SELECT Continent, MAX(CAST(total_deaths AS int)) AS TotalDeathCount
 From [Portfoilio Project]..['Covid Death$']
@@ -78,7 +64,6 @@ From [Portfoilio Project]..['Covid Death$']
 Group by Continent
 ORDER BY TotalDeathCount DESC;
 
---Let's Break Things Down By Continents
 
  SELECT location, MAX(CAST(total_deaths AS int)) AS TotalDeathCount
 From [Portfoilio Project]..['Covid Death$']
@@ -88,9 +73,6 @@ Group by location
 ORDER BY TotalDeathCount DESC;
 
 
---Let's Break Things Down By Continents
---Showing continents with the highest death count per population
-
 SELECT Continent, MAX(CAST(total_deaths AS int)) AS TotalDeathCount
 From [Portfoilio Project]..['Covid Death$']
 --Where location like '%India%'
@@ -98,7 +80,6 @@ From [Portfoilio Project]..['Covid Death$']
 Group by Continent
 ORDER BY TotalDeathCount DESC;
 
---Global Numbers
 
 SELECT
        SUM(new_cases) AS new_cases,
@@ -109,13 +90,9 @@ SELECT
            ELSE (SUM(CAST(total_deaths AS DECIMAL(18, 2))) / SUM(new_cases)) * 100
        END AS DeathPercentage
 FROM [Portfoilio Project]..['Covid Death$']
---Where location like '%states%'
 WHERE continent IS NOT NULL
---GROUP BY Date
 ORDER BY 1, 2;
 
-
---USE CTE
 
 with popvsVac(continent, Location, Date, Population, New_vaccination, Rollingpeoplevaccinated)
 as
@@ -134,8 +111,6 @@ WHERE dea.continent IS NOT NULL
 select *,(Rollingpeoplevaccinated/population)*100 
 FROM popvsVac
 
-
---TEMP TABLE
 
 DROP Table if exists #percentpopulationvaccinated
 Create Table #percentpopulationvaccinated
@@ -161,7 +136,6 @@ select *,(Rollingpeoplevaccinated/population)*100
 FROM #percentpopulationvaccinated
 
 
---creating view to store data for later visualisation
 
 Create View  PercentPopulationVaccinated as
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.New_vaccinations,
